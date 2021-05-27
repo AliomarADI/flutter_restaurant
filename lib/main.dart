@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant/components/navbar.dart';
 import 'package:restaurant/pages/booking.dart';
 
 void main() => runApp(HomePage());
@@ -12,6 +13,7 @@ class HomePage extends StatelessWidget {
         "/booking": (context) => BookingPage()
       },
       home: Scaffold(
+          drawer: NavBar(),
           appBar: AppBar(
             title: Text("Family"),
             centerTitle: true,

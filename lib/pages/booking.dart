@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 import '../main.dart';
 
@@ -15,7 +16,7 @@ class BookingPage extends StatelessWidget {
         appBar: AppBar(
           title: Text("Booking page"),
           centerTitle: true,
-          backgroundColor: Colors.deepOrange.shade600,
+          backgroundColor: Colors.deepOrangeAccent,
         ),
         body: BookingMainPage(),
       ),
@@ -72,7 +73,7 @@ class HomePageInBooking extends State<BookingMainPage> {
                 controller: null,
                 decoration: InputDecoration(
                     labelText: 'На сколько персон бронировать?',
-                    hintText: 'Число',
+                    hintText: 'Введите число',
                     prefixIcon: Icon(Icons.family_restroom),
                     suffixIcon: Icon(
                       Icons.delete_outline_outlined,
@@ -86,10 +87,12 @@ class HomePageInBooking extends State<BookingMainPage> {
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(color: Colors.blue, width: 3))),
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.number,
                 inputFormatters: [],
               ),
-              SizedBox(height: 5,),
+              SizedBox(
+                height: 5,
+              ),
               CheckboxListTile(
                 title: const Text("Аниматор для детей"),
                 value: checkAnimator,
@@ -102,15 +105,43 @@ class HomePageInBooking extends State<BookingMainPage> {
                     ListTileControlAffinity.leading, //  <-- leading Checkbox
               ),
               SizedBox(
-                height: 7,
+                height: 20,
               ),
+              DateTimePicker(
+                type: DateTimePickerType.dateTimeSeparate,
+                dateMask: 'd MMM, yyyy',
+                initialValue: DateTime.now().toString(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                icon: Icon(Icons.event),
+                dateLabelText: 'Date',
+                timeLabelText: "Hour",
+                selectableDayPredicate: (date) {
+                  // Disable weekend days to select from the calendar
+                  if (date.weekday == 6 || date.weekday == 7) {
+                    return false;
+                  }
+
+                  return true;
+                },
+                onChanged: (val) => print(val),
+                validator: (val) {
+                  print(val);
+                  return null;
+                },
+                onSaved: (val) => print(val),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+
               TextFormField(
                 controller: null,
+                maxLines: 3,
                 decoration: InputDecoration(
-                    labelText: 'На какое время бронировать?',
-                    hintText: 'Время деньги',
-                    helperText: 'Пример: 20:00 30.05',
-                    prefixIcon: Icon(Icons.date_range),
+                    labelText: 'Какие нибудь пожелания?',
+                    hintText: 'Можете предупредить о событиях, мы окажем соодействие)',
+                    prefixIcon: Icon(Icons.star_outline_sharp, color: Colors.amber,),
                     suffixIcon: Icon(
                       Icons.delete_outline_outlined,
                       color: Colors.red,
@@ -123,10 +154,28 @@ class HomePageInBooking extends State<BookingMainPage> {
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(color: Colors.blue, width: 3))),
-                keyboardType: TextInputType.datetime,
+                keyboardType: TextInputType.text,
                 inputFormatters: [],
               ),
-              // я здесь остановился
+              SizedBox(height: 30,),
+              Container(
+                margin: EdgeInsets.all(10),
+                height: 50.0,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.white70)),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/home');
+                  },
+                  padding: EdgeInsets.all(15.0),
+                  color: Colors.green,
+                  textColor: Colors.black87,
+                  child: Text("Отправить",
+                      style: TextStyle(fontSize: 15)),
+                ),
+              ),
+
             ],
           ),
         ),
@@ -134,7 +183,3 @@ class HomePageInBooking extends State<BookingMainPage> {
     );
   }
 }
-
-
-
-
